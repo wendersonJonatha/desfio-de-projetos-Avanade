@@ -44,13 +44,12 @@ Uma conta ativa no Azure.
 Azure CLI instalado e configurado.
 
 Ambiente de desenvolvimento preparado (Python, Node.js, etc.).
-
 Definição do Índice de Busca
 O índice é a estrutura que define como os dados serão organizados e pesquisados. Ele contém campos que podem ser pesquisáveis, filtráveis ou classificáveis.
 
 Exemplo de Definição de Índice (JSON)
-json
-Copy
+(´´
+
 {
   "name": "desafio-dio-index",
   "fields": [
@@ -77,98 +76,11 @@ Copy
       "sortable": true
     }
   ]
-}
+}´´´)
+
 Processo de Indexação
 Após definir o índice, os dados são enviados para o Azure Cognitive Search. Isso pode ser feito via API REST ou SDKs disponíveis.
 
 Exemplo de Upload de Dados em Python
-python
-Copy
-import requests
-import json
 
-# Configurações
-service_name = "<nome-do-servico>"
-api_key = "<sua-chave-de-api>"
-index_name = "desafio-dio-index"
-
-# URL da API
-url = f"https://{service_name}.search.windows.net/indexes/{index_name}/docs/index?api-version=2020-06-30"
-headers = {
-    "Content-Type": "application/json",
-    "api-key": api_key
-}
-
-# Dados para upload
-data = {
-    "value": [
-        {
-            "@search.action": "upload",
-            "id": "1",
-            "titulo": "Projeto DIO: Busca Inteligente",
-            "descricao": "Demonstração de indexação e consulta com Azure Cognitive Search.",
-            "dataCriacao": "2025-03-12T00:00:00Z"
-        }
-    ]
-}
-
-# Envio dos dados
-response = requests.post(url, headers=headers, json=data)
-print(json.dumps(response.json(), indent=4))
-Enriquecimento de Dados com AI Skills
-Para melhorar a qualidade dos dados, aplicamos habilidades cognitivas durante a indexação. Um exemplo é a extração de entidades de texto.
-
-Exemplo de Skillset (JSON)
-json
-Copy
-{
-  "name": "desafio-skillset",
-  "description": "Skillset para enriquecer documentos do desafio DIO.",
-  "skills": [
-    {
-      "@odata.type": "#Microsoft.Skills.Text.EntityRecognitionSkill",
-      "name": "#EntityRecognition",
-      "context": "/document/descricao",
-      "inputs": [
-        {
-          "name": "text",
-          "source": "/document/descricao"
-        }
-      ],
-      "outputs": [
-        {
-          "name": "entities",
-          "targetName": "recognizedEntities"
-        }
-      ]
-    }
-  ]
-}
-Realizando Consultas
-Com os dados indexados e enriquecidos, é possível realizar consultas avançadas. A API de busca permite filtrar, ordenar e refinar os resultados.
-
-Exemplo de Consulta Simples
-http
-Copy
-GET https://<nome-do-servico>.search.windows.net/indexes/desafio-dio-index/docs?search=portfólio&api-version=2020-06-30
-api-key: <sua-chave-de-api>
-Aprendizados e Insights
-Durante o desenvolvimento, os principais aprendizados foram:
-
-Integração com Azure: Configuração e gerenciamento de serviços na nuvem.
-
-Enriquecimento de Dados: Uso de habilidades cognitivas para extrair informações relevantes.
-
-Estruturação de Índices: Definição de campos pesquisáveis e filtráveis.
-
-Documentação: Importância de manter o projeto bem documentado para colaboração e manutenção.
-
-Expansões Futuras
-O projeto pode ser expandido de várias formas:
-
-Interface de Usuário: Desenvolver um frontend interativo para consultas.
-
-Novas Habilidades Cognitivas: Implementar análise de sentimentos ou tradução automática.
-
-Integração com Ferramentas: Conectar o serviço a dashboards ou sistemas de monitoramento.
 
