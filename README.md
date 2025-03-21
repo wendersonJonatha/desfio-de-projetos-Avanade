@@ -113,5 +113,5 @@ data = {
 # Envio dos dados
 response = requests.post(url, headers=headers, json=data)
 print(json.dumps(response.json(), indent=4))
-
+   
 
