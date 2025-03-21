@@ -48,8 +48,7 @@ Definição do Índice de Busca
 O índice é a estrutura que define como os dados serão organizados e pesquisados. Ele contém campos que podem ser pesquisáveis, filtráveis ou classificáveis.
 
 Exemplo de Definição de Índice (JSON)
-(´´
-
+```json
 {
   "name": "desafio-dio-index",
   "fields": [
@@ -76,11 +75,43 @@ Exemplo de Definição de Índice (JSON)
       "sortable": true
     }
   ]
-}´´´)
+}
+```
 
 Processo de Indexação
 Após definir o índice, os dados são enviados para o Azure Cognitive Search. Isso pode ser feito via API REST ou SDKs disponíveis.
 
 Exemplo de Upload de Dados em Python
+import requests
+import json
+
+# Substitua pelos seus valores
+service_name = "<nome-do-seu-servico>"
+api_key = "<sua-chave-de-api>"
+index_name = "desafio-dio-index"
+
+# URL da API
+url = f"https://{service_name}.search.windows.net/indexes/{index_name}/docs/index?api-version=2020-06-30"
+headers = {
+    "Content-Type": "application/json",
+    "api-key": api_key
+}
+
+# Dados para upload
+data = {
+    "value": [
+        {
+            "@search.action": "upload",
+            "id": "1",
+            "titulo": "Projeto DIO: Portfólio de Desafios",
+            "descricao": "Aplicação que demonstra a integração do Azure Cognitive Search para indexação e consulta de dados.",
+            "dataCriacao": "2025-03-12T00:00:00Z"
+        }
+    ]
+}
+
+# Envio dos dados
+response = requests.post(url, headers=headers, json=data)
+print(json.dumps(response.json(), indent=4))
 
 
