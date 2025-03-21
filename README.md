@@ -84,7 +84,7 @@ Após definir o índice, os dados são enviados para o Azure Cognitive Search. I
 Exemplo de Upload de Dados em Python
 import requests
 import json
-
+```
 # Substitua pelos seus valores
 service_name = "<nome-do-seu-servico>"
 api_key = "<sua-chave-de-api>"
@@ -113,5 +113,38 @@ data = {
 # Envio dos dados
 response = requests.post(url, headers=headers, json=data)
 print(json.dumps(response.json(), indent=4))
-   
+  ```
+
+
+ Enriquecimento de Dados com AI Skills
+Para melhorar a qualidade dos dados, aplicamos habilidades cognitivas durante a indexação. Um exemplo é a extração de entidades de texto.
+
+Exemplo de Skillset (JSON)
+```
+{
+  "name": "desafio-skillset",
+  "description": "Skillset para enriquecer documentos do desafio DIO.",
+  "skills": [
+    {
+      "@odata.type": "#Microsoft.Skills.Text.EntityRecognitionSkill",
+      "name": "#EntityRecognition",
+      "context": "/document/descricao",
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/descricao"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "entities",
+          "targetName": "recognizedEntities"
+        }
+      ]
+    }
+  ]
+}
+```
+Realizando Consultas
+Com os dados indexados e enriquecidos, é possível realizar consultas avançadas. A API de busca permite filtrar, ordenar e refinar os resultados.
 
